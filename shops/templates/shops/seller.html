@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <div class="container my-3">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr class="thead-dark">
+                <td>상품명</td>
+                <td>가격</td>
+                <td>구매자</td>
+                <td>총 개수</td>
+                <td>배송하기</td>
+            </thead>
+            <tbody>
+            {% for productAndPurchase in productAndPurchases %}
+            <tr>
+                <td>{{ productAndPurchase.product.name }}</td>
+                <td>{{ productAndPurchase.product.price }}</td>
+                <td></td>
+                <td>총 {{ productAndPurchase.product.count }}개</td>
+                <td>남은 개수 {{ productAndPurchase.product.remain_count }}개</td>
+            </tr>
+            {% for purchase in productAndPurchase.Purchase %}
+            <tr>
+                <td>ㄴ</td>
+                <td></td>
+                <td>{{ purchase.user }}</td>
+                <td></td>
+                <td>
+                    <form method="post" action="/delivery/{{ purchase.id }}/">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-dark" id="reviewToReview">배송하기</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

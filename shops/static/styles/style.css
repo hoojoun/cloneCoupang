@@ -1,0 +1,42 @@
+h1{text-align: center; margin: 50px auto 30px;}
+h1 a img{ width: 200px;}
+main{width: 500px; margin: 0 auto;}
+fieldset #login_btn{
+    background: #0074e9;
+    width: 100%; color: #fff; padding: 20px 0;
+}
+main #loginFrm {border-bottom:1px solid #aaa; margin-bottom: 20px; padding-bottom: 20px;}
+main .signup{
+    border: 1px solid #aaa; color: #0074e9;
+    display: block; background: #fff; text-align: center; padding:20px 0; width: 100%;
+}
+main #loginFrm fieldset #signup_btn{
+    background: #0074e9;
+    width: 100%; color: #fff; padding: 20px 0;
+}
+strong{
+    color: #e7223d;
+}
+footer{
+    text-align: center; font-size:0.85rem; margin-top: 20px;
+}
+main #loginFrm fieldset .btm{
+    display:flex; flex-flow:row nowrap;
+    padding: 15px; justify-content: space-between;
+}
+main #loginFrm fieldset .btm .idpw_search{color: #0074e9;}
+main #loginFrm fieldset ui .error{
+    color: #e7223d; padding:10px; display:none;
+}
+main #loginFrm fieldset li span input{
+    width: 500px; height: 40px; border:0;
+}
+main #loginFrm fieldset li span select{
+    width: 500px; height: 40px; border:0;
+}
+main #loginFrm fieldset ui li{
+    border: 1px solid #ccc; background: #fff;
+    margin-bottom: 10px;
+}
+main #loginFrm fieldset ui li span input[type=email]{}
+main #loginFrm fieldset ui li span input[type=password]{}

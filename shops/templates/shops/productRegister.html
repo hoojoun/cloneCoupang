@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품등록</title>
+    <link rel="stylesheet" href="{% static 'styles/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <script src="{% static 'script/script.js' %}"></script>
+</head>
+<body>
+<h1><a href="{% url 'landing' %}"><img src="{% static 'images/image1.png' %}" alt="쿠팡"></a></h1>
+{% block content %}
+<main>
+    <form action="{% url 'productRegister' %}" method="post" id="loginFrm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <ui>
+                <li>
+                    <span><input type="text" name="name" id="name" placeholder="상품 이름을 입력해주세요"
+                                     value="{{ form.name.value|default_if_none:'' }}"></span>
+                </li>
+                <li>
+                    <span><input type="number" name="price" id="price" placeholder="가격을 입력해주세요"
+                                 value="{{ form.price.value|default_if_none:'' }}"></span>
+                </li>
+                <li>
+                    <span><input type="file" name="image" id="image" placeholder="이미지를 넣어주세요."></span>
+                </li>
+            </ui>
+            {% include "./form_errors.html" %}
+            <button type="submit" id="login_btn">등록하기</button>
+        </fieldset>
+    </form>
+</main>
+{% endblock %}
+<footer>
+    &copy; by hojunSeo
+</footer>
+</body>
+</html>

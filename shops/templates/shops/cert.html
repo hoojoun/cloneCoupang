@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <div class="container my-3">
+        <form action="{% url 'certbuy' %}" method="post" id="loginFrm">
+            {% csrf_token %}
+            <table class="table">
+                <thead class="thead-dark">
+                <tr class="thead-dark">
+                    <td>상품명</td>
+                    <td>가격</td>
+                    <td>판매자</td>
+                    <td>수량</td>
+                    <td>선택</td>
+                </thead>
+                <tbody>
+                {% for cert in certs %}
+                {% if user == cert.user %}
+                <tr>
+                    <td><a href="/product/{{ cert.product.id }}/">{{ cert.product.name }}</a></td>
+                    <td>{{ cert.product.price }}원</td>
+                    <td>{{ cert.product.seller.CustomUser.name }}</td>
+                    <td>{{ cert.quantity }}</td>
+                    <td><input type="checkbox" name="{{ cert.product.id }}"></td>
+
+                </tr>
+                {% else %}
+                <tr>
+                    <td><a href="/product/{{ cert.id }}/">{{ cert.name }}</a></td>
+                    <td>{{ cert.price }}원</td>
+                    <td>{{ cert.seller.CustomUser.name }}</td>
+                    <td>{{ cert.quantity }}</td>
+                    <td><input type="checkbox" name="buy"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <button class="btn btn-outline-primary" type="submit" id="login_btn">구매하기</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

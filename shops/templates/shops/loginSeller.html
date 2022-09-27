@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="{% static 'styles/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <script src="{% static 'script/script.js' %}"></script>
+</head>
+<body>
+<h1><a href="{% url 'landing' %}"><img src="{% static 'images/image1.png' %}" alt="쿠팡"></a></h1>
+{% block content %}
+<main>
+    <form action="{% url 'loginSeller' %}" method="post" id="loginFrm">
+        {% csrf_token %}
+        <fieldset>
+            <ui>
+                <li>
+                    <span><input type="text" name="username" id="username" placeholder="아이디"
+                                     value="{{ form.username.value|default_if_none:'' }}"></span>
+                </li>
+                <li class="error id_error">아이디를 입력해주세요</li>
+                <li>
+                    <span><input type="password" name="password" id="password" placeholder="비밀번호"
+                                 value="{{ form.password.value|default_if_none:'' }}"></span>
+                </li>
+                <li class="error pw_error">비밀번호를 입력해주세요</li>
+            </ui>
+            {% include "./form_errors.html" %}
+            <div class="btm">
+                <p>
+                    <label>
+                        <input type="checkbox" name="remember_me" id="remember_me">
+                        <span>자동 로그인</span>
+                    </label>
+                </p>
+                <a href="#" class="idpw_search">아이디(이메일)/비밀번호 찾기 > </a>
+            </div>
+            <button type="submit" id="login_btn">로그인</button>
+        </fieldset>
+    </form>
+    <a href="{% url 'signupSeller' %}" class="signup">회원가입</a>
+</main>
+{% endblock %}
+<footer>
+    &copy; by hojunSeo
+</footer>
+</body>
+</html>

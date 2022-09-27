@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<html lang="ko">
+<head>
+    <title>쿠팡!</title>
+</head>
+<body>
+<h1 style="text-align: center; margin: 50px auto 30px;">
+    <a href="{% url 'landing' %}">
+        <img src="{% static 'images/image1.png' %}" alt="쿠팡" style="width: 200px;">
+    </a>
+</h1>
+    {% block content %}
+    {% endblock %}
+<footer>
+    <p style="text-align: center;">&copy; by hojunSeo</p>
+</footer>
+</body>
+</html>
