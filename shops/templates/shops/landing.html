@@ -44,6 +44,7 @@
             </li>
             {% endif %}
             {% for page_number in products.paginator.page_range %}
+            {% if page_number >= products.number|add:-5 and page_number <= products.number|add:5 %}
             {% if page_number == products.number %}
             <li class="page-item active" aria-current="page">
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
@@ -52,6 +53,7 @@
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
             </li>
+            {% endif %}
             {% endif %}
             {% endfor %}
             {% if products.has_next %}
@@ -104,6 +106,7 @@
             </li>
             {% endif %}
             {% for page_number in products.paginator.page_range %}
+            {% if page_number >= products.number|add:-5 and page_number <= products.number|add:5 %}
             {% if page_number == products.number %}
             <li class="page-item active" aria-current="page">
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
@@ -112,6 +115,7 @@
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
             </li>
+            {% endif %}
             {% endif %}
             {% endfor %}
             {% if products.has_next %}

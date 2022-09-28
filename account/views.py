@@ -5,10 +5,25 @@ from django.shortcuts import render, redirect
 from shops.models import *
 from .forms import *
 from .models import *
-from django.core.paginator import Paginator
 
 
 # Create your views here.
+# class JWTSignupView(APIView):
+#     serializer_class=UserJWTSignupSerializer
+#     def post(self, request):
+#         serializer=self.serializer_class(data=request.data)
+#         if serializer.is_valid(raise_exception=False):
+#             user=serializer.save(request)
+#
+#             token=RefreshToken.for_user(user)
+#             refresh=str(token)
+#             access=str(token.access_token)
+#
+#             return JsonResponse({'user':user,'access':access,'refresh': refresh})
+
+
+
+
 class UpdatedLoginView(auth_views.LoginView):
     form_class = LoginForm
 
@@ -35,15 +50,6 @@ class UpdatedLoginView(auth_views.LoginView):
         return super().dispatch(request, *args, **kwargs)
 
 
-# def landing(request):
-#     page = request.GET.get('page', '1')
-#     products = Products.objects.all()
-#     paginator = Paginator(products, 10)
-#     page_obj = paginator.get_page(page)
-#     context = {'products': page_obj}
-#     return render(request, 'shops/landing.html', {'products': products})
-
-
 def signup(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -59,14 +65,8 @@ def signup(request):
                     name=request.POST['name'],
                     phone=request.POST['phone'],
                 )
-                # username =form.cleaned_data.get('username')
-            # raw_password = form.cleaned_data.get('password1')
-            # name = form.cleaned_data.get('name')
-            # phone = form.cleaned_data.get('phone')
-            # form.save()
-            # user = authenticate(username=username, password=raw_password, name=name, phone=phone)
             authlogin(request, user)
-            ######
+
             user = CustomUser.objects.get(username=username)
             consent_list = []
             for consent in consents:
@@ -100,17 +100,10 @@ def signup_seller(request):
                     email=request.POST['email'],
                 )
 
-            # form.save()
-            # username = form.cleaned_data.get('username')
-            # raw_password = form.cleaned_data.get('password1')
-            # name = form.cleaned_data.get('name')
-            # email = form.cleaned_data.get('email')
-            # phone = form.cleaned_data.get('phone')
-            # user = authenticate(username=username, password=raw_password, name=name, phone=phone, email=email)
             authlogin(request, user)
-            ######
+
             user = CustomUser.objects.get(username=USERNAME)
-            ######
+
             CustomSeller.objects.create(CustomUser=user, businessType=request.POST.get('businessType'))
             consent_list = []
             for consent in consents:

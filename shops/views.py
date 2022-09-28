@@ -3,6 +3,7 @@ from account.models import *
 from .forms import *
 from .models import *
 from django.core.paginator import Paginator
+from django.db.models import Count, Subquery
 import time
 
 
@@ -229,19 +230,22 @@ def report_review_to_review(request, pk, pk2, pk3):
 
 def seller(request):
     if request.user.is_authenticated:
-        user = request.user
+        user = CustomSeller.objects.get(CustomUser_id=request.user.id)
         custom_user = CustomUser.objects.all()
+
         product_and_purchases = PurchaseHistory.objects.raw(
             f"""
                 SELECT *,'shops_purchasehistory'.id as pid
-                FROM 'shops_purchasehistory' 
-                LEFT JOIN 'shops_products' 
+                FROM 'shops_purchasehistory'
+                LEFT JOIN 'shops_products'
                 ON 'shops_purchasehistory'.product_id = 'shops_products'.id
                 ,(SELECT product_id,count(product_id) AS num
                 FROM 'shops_purchasehistory'
                 GROUP BY product_id
                 HAVING count(*)) AS A
-                WHERE 'shops_products'.seller_id= {user.id} and 'shops_purchasehistory'.product_id=A.product_id and 'shops_purchasehistory'.Delivery=0
+                WHERE 'shops_products'.seller_id= {user.id} and
+                'shops_purchasehistory'.product_id=A.product_id
+                and 'shops_purchasehistory'.Delivery=0
                 ORDER BY product_id;
                 """
         )
@@ -249,11 +253,16 @@ def seller(request):
             f"""
             SELECT id,product_id,count(product_id) AS num
             FROM 'shops_purchasehistory'
-            WHERE 'shops_purchasehistory'.Delivery=0
+            WHERE 'shops_purchasehistory'.Delivery=False and 
+            (SELECT id From 'shops_products' WHERE 'shops_products'.seller_id= {user.id})
             GROUP BY product_id
             HAVING count(*)>=1
+            ORDER BY product_id
             """
         )
+        # product_and_purchase_list = Products.objects.prefetch_related('purchasehistory_set').filter(
+        #     seller_id=user.id).order_by('id').annotate(count=Count('purchasehistory'))
+
         remaining_purchase_list = []
         for remainingPurchase in remaining_purchases:
             remaining_purchase_list.append(remainingPurchase.num)

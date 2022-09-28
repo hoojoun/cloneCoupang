@@ -1,4 +1,4 @@
-from .customsignal import blacklist_update
+from .customsignal import blacklist_update, User_Consent
 from django.dispatch import receiver
 from .models import *
 from shops.models import *
@@ -19,5 +19,7 @@ def blacklist_log(sender, **kwargs):
             date=True,
         )
 
-
+@receiver(User_Consent, sender=CustomUser)
+def user_consent(sender, **kwargs):
+    print("")
 blacklist_update.connect(blacklist_log)

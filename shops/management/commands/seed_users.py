@@ -15,9 +15,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         number = options.get('number')
         seeder = Seed.seeder()
-        seeder.add_entity(ReviewToReview, number, {
+        seeder.add_entity(PurchaseHistory, number, {
             'user' : CustomUser.objects.order_by("?").first(),
-            'review': Review.objects.order_by("?").first(),
+            'product': Products.objects.order_by("?").first(),
+            'Delivery': False,
         })
         seeder.execute()
         self.stdout.write(self.style.SUCCESS(f'{number} users created!'))
