@@ -1,6 +1,6 @@
-from .customsignal import blacklist_update, User_Consent
+from account.customsignal import blacklist_update, User_Consent
 from django.dispatch import receiver
-from .models import *
+from account.models import *
 from shops.models import *
 
 

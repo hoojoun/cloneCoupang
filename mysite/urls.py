@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('shops.urls')),
     path('account/', include('account.urls')),
+    path('api/', include('api.urls')),
 ]
 if settings.DEBUG:
     import debug_toolbar

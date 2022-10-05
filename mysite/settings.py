@@ -42,6 +42,13 @@ INSTALLED_APPS = [
     'django_seed',
     'simple_history',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    # 'allauth',
+    'dj_rest_auth.registration',
+    'api',
     'account',
     'shops',
 ]
@@ -125,7 +132,8 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = 'landing'
+LOGOUT_REDIRECT_URL = '/'
+
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
@@ -147,17 +155,19 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'access'
+JWT_AUTH_REFRESH_COOKIE = 'refresh'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
 }
-
-# REST_USE_JWT = True
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-#     'ROTATE_REFRESH_TOKENS': False,
-#     'BLACKLIST_AFTER_ROTATION': True,
-#     'TOKEN_USER_CLASS': 'account.CustomUser',
-# }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    # 'TOKEN_USER_CLASS': 'account.CustomUser',
+}

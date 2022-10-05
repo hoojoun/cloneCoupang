@@ -7,23 +7,6 @@ from .forms import *
 from .models import *
 
 
-# Create your views here.
-# class JWTSignupView(APIView):
-#     serializer_class=UserJWTSignupSerializer
-#     def post(self, request):
-#         serializer=self.serializer_class(data=request.data)
-#         if serializer.is_valid(raise_exception=False):
-#             user=serializer.save(request)
-#
-#             token=RefreshToken.for_user(user)
-#             refresh=str(token)
-#             access=str(token.access_token)
-#
-#             return JsonResponse({'user':user,'access':access,'refresh': refresh})
-
-
-
-
 class UpdatedLoginView(auth_views.LoginView):
     form_class = LoginForm
 
