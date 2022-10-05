@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'styles/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+<body>
+<h1><a href="{% url 'landing' %}"><img src="{% static 'images/image1.png' %}" alt="쿠팡"></a></h1>
+<main>
+    <form method="post" action="{% url 'signup_api' %}" id="loginFrm">
+        {% csrf_token %}
+        {% include "./form_errors.html" %}
+        <fieldset>
+            <p><b>회원정보를 입력해주세요</b></p>
+            <ui>
+                <li>
+                    <span><input type="email" name="username" id="username"
+                                 value="{{ form.username.value|default_if_none:'' }}" placeholder="아이디(이메일)"></span>
+                </li>
+                <li class="error id_error">이메일을 올바르게 입력해주세요</li>
+                <li>
+                    <span><input type="password" name="password" id="password1"
+                                 value="{{ form.password1.value|default_if_none:'' }}" placeholder="비밀번호"></span>
+                </li>
+                <li class="error pw1_error">영문/숫자/특수 문자 2가지 이상 조합(8~20자)</li>
+                <li>
+                    <span><input type="password" name="password2" id="password2"
+                                 value="{{ form.password2.value|default_if_none:'' }}" placeholder="비밀번호 확인"></span>
+                </li>
+                <li class="error pw2_error">새 비밀번호가 일치하지 않습니다.</li>
+                <li>
+                    <span><input type="text" name="name" id="name"
+                                 value="{{ form.name.value|default_if_none:'' }}" placeholder="이름"></span>
+                </li>
+                <li class="error na_error">이름을 올바르게 입력해주세요</li>
+                <li>
+                    <span><input type="text" name="phone" id="phone"
+                                 value="{{ form.phone.value|default_if_none:'' }}" placeholder="휴대폰 번호"></span>
+                </li>
+                <li class="error ph_error">이미 가입되어 있는 휴대폰 번호 입니다.</li>
+            </ui>
+            <p><b>쿠팡 서비스 약관을 동의해주세요</b></p>
+            <div class="btm">
+                <p>
+                    <label>
+                        <input type="checkbox" name="all" id="all">
+                        <span>모두 확인했으며 동의합니다.</span>
+                    </label>
+                </p>
+            </div>
+            {% for consent in consents %}
+            {% if consent.activate == 1 and consent.isUser == 1 %}
+            <div class="btm">
+                <p>
+                    <label>
+                        <input type="checkbox" name="{{ consent.name }}" id="{{ consent.name }}" class="normal">
+                        <span>{{ consent.title }}</span>
+                    </label>
+                </p>
+                {% if consent.subtitle != none %}
+                <p><b>{{ consent.subtitle }}</b></p>
+                {% endif %}
+                {% if consent.content != none %}
+                <p>{{ consent.content }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            <button type="submit" id="signup_btn">동의하고 가입하기</button>
+        </fieldset>
+    </form>
+</main>
+<footer>
+    &copy; by hojunSeo
+</footer>
+</body>
+</html>
