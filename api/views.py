@@ -6,16 +6,17 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import login as authlogin
 from account.models import CustomUser
-from shops.models import Products
+from shops.models import Products, Review
 from rest_framework import viewsets
 from rest_framework.response import Response
-from api.serializers import UserSerializer, SignUpSerializer
+from api.serializers import UserSerializer, SignUpSerializer, ReviewSerializer, ProductDetailSerializer
 from rest_framework import status
 from dj_rest_auth.urls import LoginView, LogoutView
 from django.conf import settings
 from django.contrib.auth import logout as django_logout
 from dj_rest_auth.jwt_auth import unset_jwt_cookies
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.paginator import Paginator
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,31 +26,34 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class ProductList(APIView):
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'shops/landingapi.html'
+    template_name = 'shops/landing_api.html'
 
     def get(self, request):
-        queryset = Products.objects.all()
-        return Response({'products': queryset})
+        page = request.GET.get('page', '1')
+        products = Products.objects.order_by('-id')
+        paginator = Paginator(products, 10)
+        page_obj = paginator.get_page(page)
+        context = {'products': page_obj}
+        return Response(context)
 
 
 class ProductDetail(RetrieveAPIView):
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'shops/productDetail.html'
+    template_name = 'shops/productDetail_api.html'
 
     def get(self, request, pk):
-        product = get_object_or_404(Products, pk=pk)
-        return Response({'product': product})
-
-    # def post(self, request, pk):
-    #     product = get_object_or_404(Products, pk=pk)
+        queryset = Products.objects.get(id=pk)
+        serializer_class = ProductDetailSerializer(queryset)
+        product = {'product': serializer_class}
+        return Response(product)
 
 
 class SignUpAPIView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'shops/signupapi.html'
+    template_name = 'shops/signup_api.html'
 
     def get(self, request):
-        response = render(request, 'shops/signupapi.html')
+        response = render(request, 'shops/signup_api.html')
         return response
 
     def post(self, request):
@@ -81,17 +85,16 @@ class SignUpAPIView(APIView):
 
 class LoginAPIView(LoginView):
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'shops/loginapi.html'
+    template_name = 'shops/login_api.html'
 
     def get(self, request):
-        response = render(request, 'shops/loginapi.html')
+        response = render(request, 'shops/login_api.html')
         return response
 
     def get_response(self):
-        response = super().get_response()
-        res = redirect('api')
-        res.cookies = response.cookies
-        return res
+        response = redirect('api')
+        response.cookies = super().get_response().cookies
+        return response
 
 
 class LogoutAPIView(LogoutView):

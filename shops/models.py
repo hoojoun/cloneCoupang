@@ -29,13 +29,13 @@ class Review(models.Model):
     content = models.TextField(null=True)
     starRating = models.IntegerField(null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, related_name='reviews')
 
 
 class ReviewToReview(models.Model):
     content = models.TextField(null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
-    review = models.ForeignKey(Review, on_delete=models.CASCADE, null=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, null=True, related_name='reviewtoreviews')
 
 
 class Report(models.Model):

@@ -3,6 +3,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from .customsignal import User_Consent
 
+
 # Create your models here.
 
 
@@ -32,10 +33,11 @@ class Consent(models.Model):
     def __str__(self):
         return self.title
 
+
 class CustomManager(models.Manager):
-    def bulk_create(self,objs,**kwargs):
+    def bulk_create(self, objs, **kwargs):
         User_Consent.send(sender=CustomUser)
-        return super(CustomManager,self).bulk_create(objs,**kwargs)
+        return super(CustomManager, self).bulk_create(objs, **kwargs)
 
 
 class UserConsent(models.Model):
